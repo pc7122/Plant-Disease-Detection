@@ -6,6 +6,7 @@ function App() {
   const [files, setFiles] = useState(null)
   const [result, setResult] = useState(null)
 
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
       "image/png": ['.png'],
@@ -29,7 +30,7 @@ function App() {
   const uploadImage = (e) => {
     e.preventDefault();
 
-    axios.post('https://plant-disease-detection-cf3z.onrender.com/predict', { file: files }, {
+    axios.post("https://plant-disease-detection-cf3z.onrender.com/predict", { file: files }, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -45,11 +46,11 @@ function App() {
   const RenderResult = () => {
     return (
       <>
-        <div className="flex justify-center items-center gap-4">
+        <div className="flex flex-col md:flex-row justify-center items-center gap-4">
           <div className="w-[20rem] h-[20rem] bg-gray-400 rounded-lg overflow-hidden">
             <img src={files.preview} alt="preview" className="w-full h-full object-cover" />
           </div>
-          <div className="flex flex-grow flex-col justify-center items-start gap-10">
+          <div className="flex flex-grow flex-row md:flex-col justify-center items-start gap-10">
             <div>
               <p className="text-lg font-semibold">Predicted Disease</p>
               <p className={`text-2xl font-bold ${result.label == 'Healthy' ? 'text-emerald-500' : 'text-red-500'}`}>
@@ -74,7 +75,7 @@ function App() {
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-center">Potato Plant Disease</h1>
         </div>
-        <div className="bg-white rounded-lg p-5 w-1/2 mx-auto mt-8">
+        <div className="bg-white rounded-lg p-5 w-[90%] md:w-1/2 mx-auto mt-8">
           {result
             ? <RenderResult />
             : <div {...getRootProps()} className="w-full flex justify-center items-center gap-10 mb-8">
