@@ -29,7 +29,7 @@ function App() {
   const uploadImage = (e) => {
     e.preventDefault();
 
-    axios.post('http://127.0.0.1:8000/predict', { file: files }, {
+    axios.post('https://plant-disease-detection-cf3z.onrender.com/predict', { file: files }, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
