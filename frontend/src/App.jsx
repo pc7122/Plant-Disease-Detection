@@ -5,6 +5,7 @@ import { useDropzone } from "react-dropzone"
 function App() {
   const [files, setFiles] = useState(null)
   const [result, setResult] = useState(null)
+  const [loading, setLoading] = useState(false)
 
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -29,6 +30,7 @@ function App() {
 
   const uploadImage = (e) => {
     e.preventDefault();
+    setLoading(true);
 
     axios.post("https://plant-disease-detection-cf3z.onrender.com/predict", { file: files }, {
       headers: {
@@ -37,20 +39,22 @@ function App() {
     }).then(response => {
       console.log(response.data)
       setResult(response.data)
+      setLoading(false)
     }).catch(error => {
       console.log(error)
       setResult(null)
+      setLoading(false)
     });
   }
 
   const RenderResult = () => {
     return (
       <>
-        <div className="flex flex-col md:flex-row justify-center items-center gap-4">
+        <div className="flex flex-col lg:flex-row justify-center items-center gap-4">
           <div className="w-[20rem] h-[20rem] bg-gray-400 rounded-lg overflow-hidden">
             <img src={files.preview} alt="preview" className="w-full h-full object-cover" />
           </div>
-          <div className="flex flex-grow flex-row md:flex-col justify-center items-start gap-10">
+          <div className="flex flex-grow flex-row lg:flex-col justify-center items-start gap-10">
             <div>
               <p className="text-lg font-semibold">Predicted Disease</p>
               <p className={`text-2xl font-bold ${result.label == 'Healthy' ? 'text-emerald-500' : 'text-red-500'}`}>
@@ -75,7 +79,21 @@ function App() {
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-center">Potato Plant Disease</h1>
         </div>
-        <div className="bg-white rounded-lg p-5 w-[90%] md:w-1/2 mx-auto mt-8">
+        <div className="relative bg-white rounded-lg p-5 w-[90%] md:w-2/3 xl:w-1/2 mx-auto mt-8 overflow-hidden">
+
+          {
+            loading &&
+            <div className="absolute inset-0 bg-white flex flex-col justify-center items-center">
+              <div className="w-20 h-20 rounded-full border-4 border-emerald-500 border-x-transparent flex justify-center items-center animate-spin">
+                <div className="w-10 h-10 rounded-full border-4 border-sky-500 border-x-transparent animate-pulse" />
+              </div>
+
+              <div>
+                <p className="text-sm text-gray-600 font-semibold mt-4 text-center">Sometimes it might take a minute to load up the server</p>
+              </div>
+            </div>
+          }
+
           {result
             ? <RenderResult />
             : <div {...getRootProps()} className="w-full flex justify-center items-center gap-10 mb-8">
