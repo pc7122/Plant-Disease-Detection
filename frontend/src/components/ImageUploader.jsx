@@ -1,8 +1,9 @@
 import { useContext } from "react";
 import { useDropzone } from "react-dropzone";
+import FileContext from "./FileContext";
 
-export default function ImageUploader({ context }) {
-    const { files, setFiles } = useContext(context);
+export default function ImageUploader() {
+    const { files, setFiles } = useContext(FileContext);
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: {
             "image/png": ['.png'],

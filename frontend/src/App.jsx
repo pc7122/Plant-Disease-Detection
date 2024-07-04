@@ -1,13 +1,13 @@
 import axios from "axios"
-import { createContext, useState } from "react"
+import { useState } from "react"
 import ImageUploader from "./components/ImageUploader"
 import Result from "./components/Result";
+import FileContext from "./components/FileContext";
 
 function App() {
   const [files, setFiles] = useState(null);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const FileContext = createContext(null);
 
   const uploadImage = (e) => {
     e.preventDefault();
@@ -50,8 +50,8 @@ function App() {
             }
 
             {result
-              ? <Result context={FileContext} result={result} />
-              : <ImageUploader context={FileContext} />
+              ? <Result result={result} />
+              : <ImageUploader />
             }
 
             <div className="flex justify-center items-center mt-5 gap-5">
